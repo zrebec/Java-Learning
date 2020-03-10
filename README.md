@@ -19,7 +19,8 @@ Základný rozdieľ je teda v tom, že zatiaľ čo hodnoty u hodnotových dátov
 
 ####Enum
 Pre zaujímavosť treba spomenúť hodnotový dátový typ enum. Tento nesmie byť použitý vo vnútri metódy.
-Smie sa teda definovať napr. v triede, napr.:
+Sám je definovaný ako trieda. Teda môže sa použiť akokeby samostatná trieda (v samostatnom súbore kľudne)
+alebo sa smie definovať vo vnútri existujúcej triedy (nie však metóde!), napr.:
 
 ```
 class Foo {
