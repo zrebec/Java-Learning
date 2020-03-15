@@ -5,13 +5,15 @@ class Phone {
     enum Brands {APPLE, SAMSUNG}
     enum ProcessorTypes {BIONIC, EXYNOS, QUALCOMM}
 
-    private Brands brand;
-    private String model;
+    final private Brands brand;
+    final private String model;
     private ProcessorTypes processorType;
     private int ramSize;
     private int romSize;
+    private static int phoneCounter = 0;
 
     public Phone(Brands brand, String model) {
+        phoneCounter++;
         this.brand = brand;
         this.model = model;
     }
@@ -46,5 +48,9 @@ class Phone {
 
     public int getRomSize() {
         return romSize;
+    }
+
+    public static int getPhoneCounter() {
+        return phoneCounter;
     }
 }

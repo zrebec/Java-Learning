@@ -13,7 +13,7 @@ public class Dog extends Animal {
 
 	@Override
 	public void setAnimal() {
-		super.isMale(true);
+		super.setSex(Sex.FEMALE);
 		super.setSound("Bark");
 		super.setWeight(8.75);
 	}

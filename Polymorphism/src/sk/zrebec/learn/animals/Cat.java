@@ -13,7 +13,7 @@ public class Cat extends Animal {
 
 	@Override
 	public void setAnimal() {
-		super.isMale(false);
+		super.setSex(Animal.Sex.MALE);
 		super.setSound("Meow");
 		super.setWeight(5);
 	}

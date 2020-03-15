@@ -13,7 +13,7 @@ public class Rabbit extends Animal {
 
 	@Override
 	public void setAnimal() {
-		super.isMale(true);
+		super.setSex(Sex.FEMALE);
 		super.setSound(null);
 		super.setWeight(4.17);
 		

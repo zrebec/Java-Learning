@@ -44,6 +44,9 @@ public class Electroshop {
             System.out.println("-------------------------------------------");
         }
 
+        System.out.println("Total cell phones for sell: " + Phone.getPhoneCounter());
+
+
     }
 
 }

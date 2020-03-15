@@ -1,9 +1,11 @@
 package sk.zrebec.learn;
 
 public abstract class Animal {
-	
+
+	public enum Sex {MALE, FEMALE}
+
 	private double weight;
-	private boolean sex;
+	private Sex sex;
 	private String sound;
 	
 	public double getWeight() {
@@ -14,11 +16,11 @@ public abstract class Animal {
 		this.weight = d;
 	}
 	
-	public boolean isMale() {
-		return sex;
+	public Sex getSex() {
+		return this.sex;
 	}
 	
-	public void isMale(boolean sex) {
+	public void setSex(Sex sex) {
 		this.sex = sex;
 	}
 	
@@ -32,7 +34,7 @@ public abstract class Animal {
 	}
 
 	public String describeAnimal() {
-		return this.getClass().getSimpleName() + ( getSound().equals("") ? " doesn't make sound"  : " make " + getSound() ) + " and " + ( isMale() ? "his" : "her" ) + " usually weight is " + getWeight() + "kg.";
+		return this.getClass().getSimpleName() + ( getSound().equals("") ? " doesn't make sound"  : " make " + getSound() ) + " and " + ( (getSex() == Sex.MALE ) ? "his" : "her" ) + " usually weight is " + getWeight() + "kg.";
 	}
 
 	public abstract void setAnimal();

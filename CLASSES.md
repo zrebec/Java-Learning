@@ -1,5 +1,9 @@
 # Triedy
-Java je celá objektovo orientovaná. Znamená to, že čokoľvek je objekt. Už aj keď
+
+Java je celá objektovo orientovaná. Znamená to, že čokoľvek je objekt.
+
+## Úvod do objektového myslenia
+Už aj keď
 vytvárame základný výpis **Hello, World!**, kde pri neobjektových jazykoch stačí
 väčšinou napísať niečo v zmysle, 
 ```
@@ -45,6 +49,15 @@ práve označovaná ako **index 0**.
 Trieda je súhrn nejakých vlastností (premenné triedy) a metód 
 (hovoro v pre programatárov v neobjektových jazykoch to môžete označovať aj
 ako "funkcie", hoc je tento výraz nesprávny a neodporúčaný).
+
+V jave rozdeľujeme premenné a metódy na 2 hlavné typy:
+
+- Instačné metódy / premenné: Sú také, ku ktorým môžeme pristupovať iba po 
+vytvorení inštancie triedy (teda objektu)
+- Statické metódy / premenné : Označujú sa modifikátorom ```static```  a môžeme 
+ich volať priamo bez nutnosti vytvorenia inštancie triedy. Takýmto metódam alebo
+premenným sa hovorí, že patria triede a nie objektu (hoc ich môžeme volať aj 
+inštancie, teda z objektu). 
 
 Aby sme mohli pokročiť, zoberme si, že chceme vytvoriť e-shop s mobilnými
 telefónmi. Sme však iba začínajú eshop a tak máme v ponuke iba zopár modelov
@@ -104,8 +117,8 @@ Phone phone = new Phone();
 
 Ako si môžeme, všimnúť, metódu z názvom ```Phone()``` vôbec v našej triede 
 ```Phone``` nemáme. Táto metóda sa nazýva **konštruktor**. Ak ho však v triede
-nemáme definovaný, Java si ho vytvorí automaticky. Tomuto sa hovorí 
-**bezparametrický konštruktor**.
+nemáme definovaný, Java si ho vytvorí automaticky ako  **bezparametrický
+konštruktor** (t.j. nemá žiadne vstupné parametre).
 
 S týmto však veľa nezmôžeme, takže si poďme našu triedu ```Phone()``` rozšíriť
 tak, aby sme mohli nastaviť jednotlivé parametre. K tomuto existujú obecne 2
@@ -246,9 +259,7 @@ webovú stránku či ktorýkoľvek iný výstup):
 ```
 System.out.println("-------------------------------------------");
 for (var phone : phones) {
-    System.out.println("Phone: " +
-           String.valueOf(phone.getBrand()) +
-            ' ' + String.valueOf(phone.getModel()));
+    System.out.println("Phone: " + phone.getBrand() + ' ' + phone.getModel());
     System.out.printf("Specifications: Processor %s, %d RAM, %d Internal storage\n",
             phone.getProcessorType(), phone.getRamSize(), phone.getRomSize());
     System.out.println("-------------------------------------------");
@@ -257,3 +268,76 @@ for (var phone : phones) {
 
 Ako bolo spomínané vyššie v kóde, môžeme použiť aj **var** ako kľúčové slovo pre
 definíciu premennej. Java typ následne automaticky rozpozná. 
+
+## Modifikátory v triedach premenných, tried a metód
+// TODO Opísať modifikátory private, protected, public, static, final ako aj
+definícinu triedy a metódy bez modifikátora
+
+## Final
+Keď sa pozrieme na našu triedu ktorá definuje mobilné telefóny, môžeme si
+všimnúť, že premenné triedy ```brand``` a ```model``` sa nastavujú už priamo
+v konštruktore. Tým, že nikde inde už pre danú inštanciu nemôžeme zmeniť značku
+ani model, priamo nás to nabáda k tomu, aby sme týmto premenným dali modifikátor
+```final```. Ten totiž hovorí o tom, že takejto premennej sa smie hodnota 
+nastaviť iba raz a nesmie sa meniť. V prípade triedy, sa táto hodnota môže 
+definovať priamo pri deklarácii premennej alebo v konštruktore triedy.
+
+Príklad použitia v metóde:
+```
+final String samsungPhoneFullName = "Samsung Galaxy A51";
+
+// alebo
+
+final String iPhoneFullName;
+iPhoneFullName = "iPhone 11 Pro";
+```
+
+Ak by sme sa pokúšali zmeniť hodnotu pre jednu z vyššie spomínaných premenných,
+kompilátor by zhylal s chybou **Error:(x, y) java: cannot assign a value to 
+final variable** pričom x reprezentuje riadok, kde hodnotu znovu meníme a y 
+znak v danom riadku.
+
+```final``` v deinícii premenných triedy znamená, že hodnota (ak nie je hodnota
+priradená už pri deklarácii) sa smie definovať priamo v konštruktore. 
+
+Preto, keďže nemáme už iné **set** metódy pre značku a model a definujeme ich v
+konštruktore, zmeníme ich deklaráciu nasledovne:
+
+```
+final private Brands brand;
+final private String model;
+``` 
+
+
+## Static
+Statické premenné alebo metódy sú také, ktoré patria triede a nie objektu. Ich
+základnou vlastnosťou je to, že ich môžeme volať bez nutnosti vytvárať
+inštanciu triedy (objekt) ale môžeme ich volať priamo z triedy. Napr. ak by sme
+chceli vedieť, koľko telefónov už máme v e-shope, môžeme si statickú premennú
+pridať priamo do našej triedy s telefónmi nasledovne:
+
+```
+private static int phoneCounter = 0;
+```
+
+do konštruktora pridáme:
+```
+phoneCounter++; 
+```
+
+a na záver, do metód ďalej pridáme **get** metódu:
+
+```
+public static int getPhoneCounter() {
+    return phoneCounter;
+}
+```
+
+Po správnej implementácii a zavolaní ```Phone.getPhoneCounter()``` v našej 
+```main``` metóde by sme mali dostať nasledujúci výsledok:
+
+```
+System.out.println("Total cell phones for sell: " + Phone.getPhoneCounter());
+```  
+
+Výsledok by mal byť **5**, v prípade, že ste nepridávali iný počet telefónov. 
