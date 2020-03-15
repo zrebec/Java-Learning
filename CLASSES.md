@@ -41,3 +41,50 @@ System.out.println("Hello, " + args[0]);
 
 Keďže polia sa indexujú od 0, znamená to, že prvá vstupná hodnota v poli je 
 práve označovaná ako **index 0**.
+
+Aby sme mohli pokročiť, zoberme si, že chceme vytvoriť Zoologickú záhradu.
+Proste zoznam zvierat. Túto triedu budeme postupne rozširovať. Začneme však
+úplný základom. 
+
+Trieda je súhrn nejakých vlastností a metód (hovoro v pre programatárov v 
+neobjektových jazykoch to môžete označovať aj ako "funkcie", hoc je tento výraz
+nesprávny a neodporúčaný).
+
+Každé zviera má nejaké spoločné ukazovateľe ako napríklad Druh, pohlavie, 
+priemerná dĺžka života, priemerná výška a váha dospelého jedinca (budeme zatiaľ
+pracovať iba s dospelými zvieratami, či je zviera sťahovavé (flutkácia) a 
+prirodezný biotop). Toto nám na začiatok stačí.
+
+```
+package com.zoo.animals; 
+
+class Animal {
+    
+    enum Species {'BEAR', 'WOLF', 'FOX', 'RABBIT', 'DEER'};
+    enum Sex {'MALE', 'FEMALE'};
+    enum Fluctuations {'NONE', 'ONLNY_TERRITORY', 'ACCROS_TERRITORIES', 'ONLY_CONTINENT', 'ACRROS_CONTINETS'};
+    enum Biotops {'UNDERGROUND', 'HUMID', 'FOREST', 'UNDERGROUND', 'RIVER', 'SEA', 'OCEAN', 'AIR'};
+
+    // Specie of animal
+    private Species specie;
+
+    // Sex of animal
+    private Sex sex;
+
+    // Average length of life in years
+    private int avgLifeLength;
+
+    // Average weight in kilograms
+    private int avgWeight;
+
+    // Averate height in meters and centimeters
+    private float int avgHeight;
+
+    // Fluctuation
+    private Fluctiations fluctuation;
+
+    // Natural biotop
+    private Biotops biotop; 
+ 
+}
+```
