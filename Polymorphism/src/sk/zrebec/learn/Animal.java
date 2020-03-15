@@ -30,11 +30,11 @@ public abstract class Animal {
 	public void setSound(String sound) {
 		this.sound = sound;
 	}
-	
+
 	public String describeAnimal() {
-		return this.getClass().getSimpleName() + ( getSound() == "" ? " doesn't make sound"  : " make " + getSound() ) + " and " + ( isMale() ? "his" : "her" ) + " usually weight is " + getWeight() + "kg.";
-	};
-	
+		return this.getClass().getSimpleName() + ( getSound().equals("") ? " doesn't make sound"  : " make " + getSound() ) + " and " + ( isMale() ? "his" : "her" ) + " usually weight is " + getWeight() + "kg.";
+	}
+
 	public abstract void setAnimal();
 
 }
