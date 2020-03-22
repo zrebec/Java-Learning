@@ -46,7 +46,24 @@ public class Electroshop {
 
         System.out.println("Total cell phones for sell: " + Phone.getPhoneCounter());
 
+        Phone.savePhoneInformation(phones[2]);
+        Phone.savePhoneInformation(phones[1], Phone.Props.BRAND);
 
+        int studentID = 5;
+        StringBuilder studentName = new StringBuilder("Martin");
+        System.out.printf("Student with ID %d is called %s\n",
+                studentID, studentName);
+        dataTypeDifference(studentID, studentName);
+        System.out.printf("Student with ID %d is called %s\n",
+                studentID, studentName);
+
+    }
+
+    static void dataTypeDifference(int studentID, StringBuilder studentName) {
+        //studentID = 2;
+        studentName = studentName.replace (0, studentName.length(), "Peter");
+        System.out.printf("Student with ID %d is called %s\n",
+                studentID, studentName);
     }
 
 }

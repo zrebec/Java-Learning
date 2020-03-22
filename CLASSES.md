@@ -14,7 +14,7 @@ nejakom) balíčku a následne v metdóde ```main``` (hlavná metóda z celého
 balíčku alebo triedy), môžeme vypísať naše **Hello, World!**. Teda správny
 zápís by mal byť:
 
-```
+```java HelloWorld
 package com.example.javalearning.classes;
 
 class HelloWorld {
@@ -39,7 +39,7 @@ sme chceli vypísať nie, **Hello, World!**, ale iný text, ktorý určime ako
 vstupný parameter metódy, tak by sme našu triedu upravili iba minimálne. 
 Konkrétne riadok výpisu by sme zmenili na
 
-```
+```java HelloWorld
 System.out.println("Hello, " + args[0]);
 ``` 
 
@@ -66,7 +66,7 @@ priestoru (ostatné parametre telefónov a elektroniky celkovo zatiaľ nebudeme
 brať do úvahy). 
 
 Definujeme si triedu:
-```
+```java Electroshop
 package com.electroshop;
 
 class Phone {
@@ -100,7 +100,7 @@ v nej nič nastaviť (zatiaľ).
 Novú inštanciu triedy (to sa volá v sktučonosti objekt) vytvoríme pomocou
 (ideálne v samostatnom súbore):
 
-```
+```java Electroshop
 Phone phone = new Phone();
 
 /*
@@ -136,7 +136,7 @@ settery.
 
 Upravená trieda teda bude vyzerať nasledovne:
 
-```
+```java Phone
 package com.electroshop;
 
 class Phone {
@@ -208,7 +208,7 @@ parametre zatiaľ nie. Chceme však čo najrýchlejšie tieto telefóny dostať 
 obehu a tak ich rýchlo nahodíme do nášho e-shopu (súbor, kde sme vytvárali) 
 inštanciu objektu, zmeníne nasledovne):
 
-```
+```java Electroshop
 Phone[] phones = new Phone[5];
 
 phones[0] = new Phone(Phone.Brands.APPLE, "8");
@@ -221,7 +221,7 @@ phones[4] = new Phone(Phone.Brands.SAMSUNG, "S10 e");
 Teraz sme si však pozreli telefóny bližšie (pootáčali krabice, prečítali 
 hodnoty)a môžeme doplniť chýbajúce parametre:
 
-```
+```java Electroshop
 // iPhone 8 (Bionic, 2GB RAM, 64GB internal storage)
 phones[0].setProcessorType(Phone.ProcessorTypes.BIONIC);
 phones[0].setRamSize(2);
@@ -256,7 +256,7 @@ pozrieť ako by sme mohli jednotlivé telefóny vylistovať na výstup (teraz ib
 na konzolu, ale rovnaký spôsob použitia pre výber parametrov by bol aj pre
 webovú stránku či ktorýkoľvek iný výstup):
 
-```
+```java Electroshop
 System.out.println("-------------------------------------------");
 for (var phone : phones) {
     System.out.println("Phone: " + phone.getBrand() + ' ' + phone.getModel());
@@ -283,7 +283,7 @@ nastaviť iba raz a nesmie sa meniť. V prípade triedy, sa táto hodnota môže
 definovať priamo pri deklarácii premennej alebo v konštruktore triedy.
 
 Príklad použitia v metóde:
-```
+```java Electroshop
 final String samsungPhoneFullName = "Samsung Galaxy A51";
 
 // alebo
@@ -303,7 +303,7 @@ priradená už pri deklarácii) sa smie definovať priamo v konštruktore.
 Preto, keďže nemáme už iné **set** metódy pre značku a model a definujeme ich v
 konštruktore, zmeníme ich deklaráciu nasledovne:
 
-```
+```java Phone
 final private Brands brand;
 final private String model;
 ``` 
@@ -316,18 +316,18 @@ inštanciu triedy (objekt) ale môžeme ich volať priamo z triedy. Napr. ak by 
 chceli vedieť, koľko telefónov už máme v e-shope, môžeme si statickú premennú
 pridať priamo do našej triedy s telefónmi nasledovne:
 
-```
+```Java Phone
 private static int phoneCounter = 0;
 ```
 
 do konštruktora pridáme:
-```
+```java Phone
 phoneCounter++; 
 ```
 
 a na záver, do metód ďalej pridáme **get** metódu:
 
-```
+```java Phone
 public static int getPhoneCounter() {
     return phoneCounter;
 }
@@ -336,8 +336,163 @@ public static int getPhoneCounter() {
 Po správnej implementácii a zavolaní ```Phone.getPhoneCounter()``` v našej 
 ```main``` metóde by sme mali dostať nasledujúci výsledok:
 
-```
+```java Electroshop
 System.out.println("Total cell phones for sell: " + Phone.getPhoneCounter());
 ```  
 
-Výsledok by mal byť **5**, v prípade, že ste nepridávali iný počet telefónov. 
+Výsledok by mal byť **5**, v prípade, že ste nepridávali iný počet telefónov.
+
+## Metódy v triedach
+O metódach sme si už vraveli vyššie, ale skúsme si povedať niečo viac o nich.
+Základná štruktúra je taká, že každá metóda musí mať minimálne návratový typ
+(v prípade, že metóda nič nevracia je to ```void```) a názov metódy. Konvencia
+nám káže aby sa metóda vždy začínala malým písmenom a potom každé ďalšie slovo
+z názvu metódy (keďže pri definíncii názvu metódy nemôžeme používať medzery) by
+malo mať už veľké písmeno na začiatku.
+
+V našom obchode s mobilnými tefónmi máme metódu, ktorá nám nám napríklad vráti
+počet telefónov, ktoré máme v katalógu. Teraz však chceme pridať funkcionalitu,
+ktorá nám vypíše všetky informácie o telefóne (vstupným parametrom bude 
+inštancia objektu). V reálnom prípade by to mohlo slúžiť na zápis do databázy,
+ale nateraz nám musí stačiť výpis na obrazovku.
+
+Začneme teda definínicou a telom metódy (samozrejme v triede, ktorá pracuje s
+telefónmi. V našom prípade je to **Phone.java**):
+```java Phone
+static void  savePhoneInformation (Phone phone) {
+    System.out.printf("Brand: %s\n", phone.brand);
+    System.out.printf("Model: %s\n", phone.model);
+    System.out.printf("Specifications: %d GB RAM, %d GB internal storage\n",
+            phone.ramSize, phone.romSize);
+}
+```
+modifikátorom ```static``` sme si definovali, že metóda bude patriť triede a nie
+objektu (resp. inštancii triedy). ```void``` nám zase definoval, že táto metóda
+nemá žiadnu návratovú hodnotu (ak by sme ukladali do databázy, vracali by sme
+zrejme aspoň ```boolean``` **true** alebo **false** podľa toho, či sa telefón
+podaril uložiť do databázy alebo nie.). Nasleduje názov metódy podľa konvencie
+a následne v zátvorkách je vstupný parameter (budeme mu predávať nejakú 
+inštanciu triedy ```Phone``` a pomenovali sme ju ako ```phone```). Telo metódy
+už neobsahuje nič dôležité, len obyčajný výpis.
+
+Implementácia metódy v ```main``` metóde:
+```java Electroshop
+Phone.savePhoneInformation(phones[2]);
+```
+Povedzme však, že túto metódu chceme rozšíriť a chceme aby v databáze upravila
+jeden vstupný parameter (v tom prípade ho iba opať vypíšeme). Urobíme si metódu
+presne s takým istým názvom ale počet vstupných parametrov bude iný.
+
+Najskôr si však potrebujeme upraviť súbor **Phone.java** kde doplníme 
+nasledovné: 
+```java Phone
+enum Props {BRAND, MODEL, PROCESSOR_TYPE, RAM, ROM}
+```
+Keďže nevieme, čo chceme z telefónu modifikovať (v tomto prípade len vypísať),
+je dobré si urobiť zoznam *Properties* (vlastností), ktoré je možné modifikovať
+
+Následne nasleduje samotná metóda:
+```java Phone
+static void savePhoneInformation (Phone phone, Props property) {
+    switch (property) {
+        case BRAND: System.out.println("Brand: " + phone.brand); break;
+        case MODEL: System.out.println("Model: " + phone.model); break;
+        case PROCESSOR_TYPE: System.out.println("Model: "
+                + phone.processorType); break;
+        case RAM: System.out.println("RAM: " + phone.ramSize); break;
+        case ROM: System.out.println("Storage: " + phone.romSize); break;
+    }
+}
+``` 
+
+Telo funkcie je snáď jasné, switch a case sme si už vysveľovali v 
+predchádzajúcich kapitolách.
+
+>To, že môžeme mať 2 metódy s rovnakým názvom ale s rozdielnym počtom vstupných
+>parametrov, to sa v objektovom programovaní navýva preťažovanie metód
+>(v angličtine tzv. **Overloading**). Exsituje aj pretypovanie metód ale k tomu
+>sa dostaneme ešte (anglicky **Overriding**). To je ak máme metódu v tirede
+>ktorá je napríklad potomkon inej triedy s takou istou metodou a vytvarame 
+>instanciu novej triedy a tam zavoláme danú metódu, tak sme pretypovali práve
+>v potomkovi metódu.
+
+Pri vstupných parametroch je dobré poznačiť, že pozor na rozdiel medzi
+hodnotovými a referenčnými dátovými typmi. 
+
+Vyskúšajme si veľmi jednoduchý príklad (mimo nášho eshopu). V našej triede
+**Electroshop.java** si po main vytvoríme ešte jednu metódu a to konkrétne
+```dataTypeDifference``` nasledovne:
+
+```java ElectroShop
+static void dataTypeDifference(int studentID, String studentName) {
+    studentID = 2;
+    studentName = "Peter";
+    System.out.printf("Student with ID %d is called %s\n",
+            studentID, studentName);
+}
+```
+
+následne spravme implementáciu nasledovným štýlom:
+
+```java Electroshop
+int studentID = 5;
+String studentName = "Martin";
+System.out.printf("Student with ID %d is called %s\n",
+        studentID, studentName);
+dataTypeDifference(studentID, studentName);
+System.out.printf("Student with ID %d is called %s\n",
+        studentID, studentName);
+```
+
+Výstup bude nasledovný:
+
+```
+Student with ID 5 is called Martin
+Student with ID 2 is called Peter
+Student with ID 5 is called Martin
+```
+
+Je to z dôvodu, že ak vnútorne prepíšeme hodnotu nejakej premennej v metóde, 
+platí iba pre tú danú metódu. Nebude mať vplyv na pôvodnú hodnotu.
+
+Ak chceme, aby sa aj druhý výpis rovnal menu **Peter** a nie **Martin**, musíme
+použiť ```StringBuilder```
+
+Zmeníme našu metódu ```dataTypeDifference``` nasledovne:
+
+```
+static void dataTypeDifference(int studentID, StringBuilder studentName) {
+    studentID = 2;
+    studentName = studentName.replace (0, studentName.length(), "Peter");
+    System.out.printf("Student with ID %d is called %s\n",
+            studentID, studentName);
+}
+```
+
+a implementáciu nasledovne:
+```
+int studentID = 5;
+StringBuilder studentName = new StringBuilder("Martin");
+System.out.printf("Student with ID %d is called %s\n",
+        studentID, studentName);
+dataTypeDifference(studentID, studentName);
+System.out.printf("Student with ID %d is called %s\n",
+        studentID, studentName);
+```
+Teraz bude výstup vyzerať nasledovne:
+```
+Student with ID 5 is called Martin
+Student with ID 2 is called Peter
+Student with ID 5 is called Peter
+```
+Je to kvôli tomu, že pôvodný string (v tomto prípade iba referenciu na **neho!**
+sme si zmenili prostredníctvom metódy ```replace()``` v triede 
+```StringBuilder``` hodnotu tohto stringu. Nevytvoril v našej metóde nový
+dátový typ ```String``` ale odkázal sa (zato sa to volá referenčný dátový typ)
+na pôvodnú deklaráciu ```studentName``` a tam pomcou ```replace``` zmenil
+časť alebo v našom prípade celý string na inú hodnotu.  
+
+>Teraz tento zmätok môžeme zmazať ale treba to mať na zreteli a dobre si to 
+>zapamtať!
+
+
