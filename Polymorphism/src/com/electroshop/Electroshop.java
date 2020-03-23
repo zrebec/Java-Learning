@@ -37,7 +37,7 @@ public class Electroshop {
         phones[4].setRomSize(128);
 
         System.out.println("-------------------------------------------");
-        for (var phone : phones) {
+        for (Phone phone : phones) {
             System.out.println("Phone: " + phone.getBrand() + ' ' + phone.getModel());
             System.out.printf("Specifications: Processor %s, %d RAM, %d Internal storage\n",
                     phone.getProcessorType(), phone.getRamSize(), phone.getRomSize());
@@ -61,7 +61,7 @@ public class Electroshop {
 
     static void dataTypeDifference(int studentID, StringBuilder studentName) {
         //studentID = 2;
-        studentName = studentName.replace (0, studentName.length(), "Peter");
+        studentName.replace (0, studentName.length(), "Peter");
         System.out.printf("Student with ID %d is called %s\n",
                 studentID, studentName);
     }

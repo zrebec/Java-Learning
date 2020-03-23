@@ -308,6 +308,42 @@ final private Brands brand;
 final private String model;
 ``` 
 
+Ešte je dobré spomenúť, že final nemusia byť iba premenné, ale aj metódy.
+Hovorí to o tom, že metódu final nemôže prepísať žiadny potomok triedy, kde
+je final metóda použitá.
+
+Krátky príklad:
+
+```
+class Foo {
+    final void printMessage() {
+        System.out.println("Hello, world!");
+    }
+}
+
+class Bar extends Foo {
+    void printMessage() {
+        System.out.println("This will not work!");
+    }
+}
+```
+
+Dostali by sme hlášku:
+
+```
+'printMessage()' cannot override 'printMessage()' in 'com.java.package.Foo'; overridden method is final
+```
+
+Znamená to, že táto metóda nemôže byť **"overridden"**, teda metóda nemôže
+byť prepísaná. Môže však byť preťažená, teda **"overloaded"**. Ak by sme
+do vnútra pozmenili inicializáciu metódy ```printMessage()``` v triede
+Foo na  ```void printMessage(int n)```, náš program by prešiel kompilátorom,
+pretože metódu sme preťažily (teda použily iné vstupné parametre).
+
+Nefungoval by však "trik", že ak by metóda ```printMessage()``` vracala napr.
+```int``` v triede ```Foo``` a ```string``` v triede ```Bar```, pretože sa
+stále jedná iba o prepisovanie a nie preťažovanie.
+
 
 ## Static
 Statické premenné alebo metódy sú také, ktoré patria triede a nie objektu. Ich
@@ -463,7 +499,7 @@ Zmeníme našu metódu ```dataTypeDifference``` nasledovne:
 ```
 static void dataTypeDifference(int studentID, StringBuilder studentName) {
     studentID = 2;
-    studentName = studentName.replace (0, studentName.length(), "Peter");
+    studentName.replace (0, studentName.length(), "Peter");
     System.out.printf("Student with ID %d is called %s\n",
             studentID, studentName);
 }
@@ -495,4 +531,163 @@ na pôvodnú deklaráciu ```studentName``` a tam pomcou ```replace``` zmenil
 >Teraz tento zmätok môžeme zmazať ale treba to mať na zreteli a dobre si to 
 >zapamtať!
 
+#### Miešanie static a non-static premenných
 
+Statické premenné v triedach môžeme používať aj non-static metódach. Naopak
+to však neplatí.
+
+Teda, ak máme premennú ktorá patrí triede (je static), napr. 
+```static int a;```, môžeme ju použiť aj metóde ktorá neni statická, napríklad
+```void useStaticVariableInThisMethod()```.
+
+Naopak, ak by sme chceli použiť premennú a z triedy, ktorej deklarácia 
+by vyzerala nasledovne ```int a;``` v metóde 
+```static void useNonStaticVariableInTHisMethod()```, tak by sme už dostali
+kompilačnú chybu, že nemôžeme používať nestatické premenné v statickej metóde.
+
+## Premenné z pohľadu deklarácie
+Každá premenná musí niekomu patriť. Môžeme si to rozdeliť nasledovne:
+
+- Deklarácia v triede (je možné ju používať v metódach) alebo aj priamo ak je
+```public```, toto hoc niekedy môže prísť ako dobré riešenie, vo všeobecnosti
+sa to neodporúča (používať s rozumom)
+- Lokálna premenná hovorí o tom, že daná premenná bude použiteľná iba v metóde
+v ktorej bola deklarovaná
+- Statické premenné deklarované v triede. Spomínali sme vyššie, kde sme
+slovíčku ```static``` venovali celú kapitolu. Pre zhrnutie, znamená to, že 
+premenná patrí tirede. Je použiteľná iba v static metódach alebo, opäť v 
+inštancii triedy (objekte) v prípade, že je ```public``` 
+
+Premenná v tirede stačí, aby bola iba inicializovaná. Môže, ale aj nemusí jej
+byť priamo priradená hodnota. V prípade, že ide o deklaráciu premennej s 
+modififátorom ```final```, v takom prípade jej musí byť hodnota priradená
+v konštruktore triedy.   
+
+>Treba pamätať na to, že ak deklarujeme premennú v triede primitívneho dátového
+>typu, bude mať svoju štandartnú *"defaultnú"* hodnotu. Napríklad. ak dáme
+>```int a;``` budeme ju môcť v metóde použiť ale treba počítať s tým, že jej
+>hodnota bude 0. Boolean bude mať hodnotu "**false**" ale ```String``` bude
+>```null``` a nebude to prázdny String, pretože to nie je primitívny dátový
+>typ. Neplatí do však pre deklaráciu premenenej v metóde. Viď nižšie.
+ 
+Avšak, premenná v metóde už musí byť inicalizovaná. Iba
+deklarácia nestačí. Teda ak by sme mali iba ```int a;``` v metóde by sme s ňou
+chceli pracovať, nemôžeme očakávať, že bude mať hodnotu 0, tak ako to bolo, 
+keď sme ju deklarovali iba v triede.
+
+#### Zatienie premennej
+V prípade, že máme nejakú premennú inicializovanú v triede a následne premennú
+s takým istým menom v metóde, hovoríme o zatienení premennej. Na to aby sme
+vytiahli hodnotu premennej z triedy, musíme použiť s použitím ```this``` 
+alebo s názvom metódy z ktorej chceme premennú brať (```this``` ide použiť iba
+v prípade, že premenná je v tej istej triede ako metóda ktorá premennú triedy
+zatieňuje. Príklad:
+
+```
+class Foo {
+    String s = "Hello";
+
+    void printHelloWorld() {
+        String s = "World";
+        System.out.println(this.s + ", " + s + "!");
+    }
+    
+}
+```
+
+Následne by sme si kdesi v metóde ```main``` vytvorili inštanciu triedy 
+```Foo``` a zavolali metódu ```printHelloWorld()```.
+
+>Treba mať na pamäti, že this ide použiť iba non-static premenných! V prípade,
+>že by sme dali ```String s``` ako static, nemohli by sme ju použiť v kontexte
+>```this.s```!
+
+Ak by sme tento príklad chceli prerobiť na to, aby sme použili statickú premennú
+a statickä metódu (aby si nebolo treba vytvárať obekt), tak by ho upravili 
+nasledovne:
+```
+class Foo {
+    static String s = "Hello";
+
+    static void printHelloWorld() {
+        String s = "World";
+        System.out.println(Foo.s + ", " + s + "!");
+    }
+
+}
+```
+Trik je v tom, že pri výpise sa neodkazuje cez ```this``` ale priamo cez názov
+metódy, z ktorej premennú berieme. Tá musí byť tiež statického kontextu. 
+Následne by ```main()``` stačilo použiť ```Foo.printHelloWorld();``` a výsledok
+by bol tototný.
+
+>Hlavne treba pamätať na to, že nemôžeme miešťať static a non-static premenné
+>a metódy ako sa nám zachce! Teda ak dostaneme hlášku typu: 
+>**non-static variable s cannot be referenced from a static context**, tak už
+>budeme vedieť kde asi hľadať chybu.
+
+
+
+Zásadný rozdieľ je v tom, že cez ```this``` sa vždy odkazujeme na premennú
+triedy (ďalej to budeme nazývať už vlastnosť triedy) zatiaľ čo ak zatienime
+premennú v metóde (či už formou vstupného parametra alebo vo vnútri metódy),
+tak bez použitia ```this``` sa odkazujeme na premennú toho najmenšieho lokálneho
+bloku (nemusí to byť len premenná v rámci metódy, môže to byť premenná v rámci
+podmienky alebo cyklu).
+
+Opäť toto najlepšie pochopíme na príklade:
+
+```
+class Car {
+    int color;
+    String brand = "Audi";
+
+    void setColor(int color) {
+        this.color = color;
+    } 
+
+    void setBrand(String band) {
+        this.brand = brand;
+    }
+}
+```
+
+Keď nastavujeme farbu auta cez ```setColor```, všetko je v poriadku. 
+```this.color``` nám poukazuje na vlastnosť triedy a ```color``` nám hovorí, 
+že takéto číslo priradíme.
+
+Pri ```setBrand``` je už situácia iná. Všimnime si hlášky (vo väčšide Java IDE)
+*Variable 'brand' is assigned to itself*. Nie je to kompilačná chyba, program
+by nám zbehol, ale je blbosť aby sa hodnota nejakej vlastnosti triedy odkazovala
+na seba samú. A to z dôvodu, že vo vstupnom parametri máme ```String band```,
+teda asi preklep. 
+
+Tomuto sa hovorí tvz. logické chyby. Pozor na ne! Program sa skompiluje a všetko
+bude fungovať akurát, nikdy vždy budeme dostávať značku auta "Audi", aj keby sme
+nastavili "Škoda". Pozrime sa na implementáciu:
+
+```
+Car c = new Car();
+System.out.println("Default color: " + c.color );
+System.out.println("Default brand: " + c.brand );
+c.setColor(4);
+c.setBrand("Skoda");
+System.out.println("New color: " + c.color );
+System.out.println("New color: " + c.brand );   
+```
+
+dostaneme nasledovný výstup:
+
+```
+Default color: 0
+Default brand: Audi
+New color: 4
+New color: Audi
+```
+
+A to preto, že štandartná hodnota pre ```int``` je 0 ak je to ako vlastnosť 
+triedy, to už vieme. Ale zmenili sme to cez ```setColor()``` metódu. Vlastnosti
+triedy sa cez ```this.color``` nastavila premenná ```color``` ktorá je použitá
+ako vstupný parameter metódy ```setColor```. Ale značku auta sme nezmenili 
+kvôli preklepu a aj keď vnútro metódy bolo napísané správne, vstupný parameter
+obsahoval preklep. 
