@@ -729,4 +729,4 @@ ako vstupný parameter metódy ```setColor```. Ale značku auta sme nezmenili
 kvôli preklepu a aj keď vnútro metódy bolo napísané správne, vstupný parameter
 obsahoval preklep.
 
-A teraz ideme rozširovať náš obchod
+A teraz ideme rozširovať náš obchod a hurá do predaja
