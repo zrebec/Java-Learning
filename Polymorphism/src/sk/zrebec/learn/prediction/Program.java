@@ -1,7 +1,5 @@
 package sk.zrebec.learn.prediction;
 
-import sk.zrebec.learn.animals.Cat;
-
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.NavigableMap;

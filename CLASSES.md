@@ -270,10 +270,47 @@ Ako bolo spomínané vyššie v kóde, môžeme použiť aj **var** ako kľúčo
 definíciu premennej. Java typ následne automaticky rozpozná. 
 
 ## Modifikátory v triedach premenných, tried a metód
-// TODO Opísať modifikátory private, protected, public, static, final ako aj
-definícinu triedy a metódy bez modifikátora
+Modifikátory prístupu k metódam alebo vlastnostiam triedy:
 
-## Final
+### Default (without modifier)
+Tento modifik8tor je použiteľný iba pri definícii triedy a znamená, že trieda je
+použiteľná iba v danom balíčku (package). V inom balíčku toho projektu ju už 
+nemôžeme použiť. 
+
+### Public
+Verejný prístup k premennej, metóde alebo triede. Znamená to, že daná vlastnosť
+je použiteľná z inštancie triedy (objektu), v zdedených triedach alebo v triede
+samotnej
+
+### Protected
+Tento modifikácor ide použiť iba pre vlastnosti (premenné) alebo pre metódy. Nie
+však pre triedu samostnú. Hovorí o tom, že daná vlastnosť či metóda je 
+použiteľná v samotnej triede alebo v triedach ktoré túto triedu dedia.
+
+### Private
+Je najskúromnejší model prístupnosti k vlastnosti triedy. Väčšinou sa používa
+pri vlastnostiach (premenných). Znamená to, že s danou vlastnosťou smie pracovať
+iba trieda samotná. Nejde to zavolať z objektu ani z tried, ktoré túto triedu
+dedia. Na inicializovanie nejakej vlastnosti požom používame **getters** and
+**setters**. Toto nejde použiť pre triedu samostnú, iba pre jej vlastnosti
+(premenné a metódy).
+
+Príklad:
+```java
+class PrivateTest {
+    private String model;
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public String getModel() {
+        return model;
+    }
+}
+```
+
+### Final
 Keď sa pozrieme na našu triedu ktorá definuje mobilné telefóny, môžeme si
 všimnúť, že premenné triedy ```brand``` a ```model``` sa nastavujú už priamo
 v konštruktore. Tým, že nikde inde už pre danú inštanciu nemôžeme zmeniť značku
@@ -345,7 +382,7 @@ Nefungoval by však "trik", že ak by metóda ```printMessage()``` vracala napr.
 stále jedná iba o prepisovanie a nie preťažovanie.
 
 
-## Static
+### Static
 Statické premenné alebo metódy sú také, ktoré patria triede a nie objektu. Ich
 základnou vlastnosťou je to, že ich môžeme volať bez nutnosti vytvárať
 inštanciu triedy (objekt) ale môžeme ich volať priamo z triedy. Napr. ak by sme
@@ -666,19 +703,19 @@ Tomuto sa hovorí tvz. logické chyby. Pozor na ne! Program sa skompiluje a vše
 bude fungovať akurát, nikdy vždy budeme dostávať značku auta "Audi", aj keby sme
 nastavili "Škoda". Pozrime sa na implementáciu:
 
-```
+```java Car
 Car c = new Car();
 System.out.println("Default color: " + c.color );
 System.out.println("Default brand: " + c.brand );
 c.setColor(4);
 c.setBrand("Skoda");
 System.out.println("New color: " + c.color );
-System.out.println("New color: " + c.brand );   
+System.out.println("New color: " + c.brand );
 ```
 
 dostaneme nasledovný výstup:
 
-```
+```output
 Default color: 0
 Default brand: Audi
 New color: 4
@@ -690,4 +727,6 @@ triedy, to už vieme. Ale zmenili sme to cez ```setColor()``` metódu. Vlastnost
 triedy sa cez ```this.color``` nastavila premenná ```color``` ktorá je použitá
 ako vstupný parameter metódy ```setColor```. Ale značku auta sme nezmenili 
 kvôli preklepu a aj keď vnútro metódy bolo napísané správne, vstupný parameter
-obsahoval preklep. 
+obsahoval preklep.
+
+A teraz ideme rozširovať náš obchod
